@@ -127,7 +127,7 @@ const resizeImageAvif = (configuration) => {
               let width = Math.floor((metadata.width * version.percent) / 100);
               let converted = sharp(file.contents)
                 .resize({ width: width })
-                .avif({ quality: version.quality.avif * 100 })
+                .avif({ quality: Math.floor(version.quality.avif * 100) })
                 .toBuffer();
               return converted
                 .then(function (buffer) {
