@@ -1,0 +1,38 @@
+{
+  "name": "gulp-nc-image-utilities",
+  "version": "0.1.0",
+  "description": "Simple utility functions for resizing and reformatting images for website use",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angusmci/gulp-nc-image-utilities.git"
+  },
+  "keywords": [
+    "images",
+    "webdev",
+    "webp",
+    "avif",
+    "jpeg"
+  ],
+  "author": "Angus McIntyre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angusmci/gulp-nc-image-utilities/issues"
+  },
+  "homepage": "https://github.com/angusmci/gulp-nc-image-utilities#readme",
+  "devDependencies": {
+    "jshint": "^2.13.5"
+  },
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-changed": "^4.0.3",
+    "gulp-image-resize": "^0.13.1",
+    "gulp-imagemin": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-webp": "^7.0.0"
+  }
+}
