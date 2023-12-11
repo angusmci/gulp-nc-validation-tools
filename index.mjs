@@ -9,6 +9,8 @@ import imageminMozJpeg from "imagemin-mozjpeg";
 import imageminWebp from "imagemin-webp";
 import sharp from "sharp";
 import through2 from "through2";
+import lqip from "lqip-modern";
+import File from "vinyl";
 
 /**
  * Convert files to JPEG according to the specifications given in a configuration.
@@ -154,8 +156,55 @@ const resizeImageAvif = (configuration) => {
   });
 };
 
+/**
+ * Generate placeholders according to a configuration. The configuration should
+ * specify `configuration.source`, `configuration.dest`, and optionally,
+ * `configuration.format` ('jpeg' or 'webp', defaults to 'webp').
+ *
+ * @param {*} configuration
+ * @returns
+ */
+const generatePlaceholders = async (configuration) => {
+  return new Promise(async (resolve, reject) => {
+    const imgFormat = configuration.format || "webp";
+    try {
+      gulp
+        .src(configuration.source + "/**/*.png")
+        .pipe(changed(configuration.dest, { extension: "." + imgFormat }))
+        .pipe(
+          through2.obj(async function (file, _, cb) {
+            var filePath = path.join(
+              configuration.source,
+              path.relative(file.base, file.path)
+            );
+            const result = await lqip(filePath, { outputFormat: imgFormat });
+            var outputFile = new File();
+            outputFile.path = path.relative(file.base, file.path);
+            outputFile.contents = result.content;
+            this.push(outputFile);
+            cb();
+          })
+        )
+        .pipe(
+          rename(function (path) {
+            path.extname = "." + imgFormat;
+          })
+        )
+        .pipe(gulp.dest(configuration.dest));
+      resolve(true);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 /* ======================================================================
  * EXPORTS
  * ====================================================================== */
 
-export { resizeImageJpg, resizeImageWebp, resizeImageAvif };
+export {
+  resizeImageJpg,
+  resizeImageWebp,
+  resizeImageAvif,
+  generatePlaceholders,
+};
