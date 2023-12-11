@@ -11,6 +11,7 @@ import sharp from "sharp";
 import through2 from "through2";
 import lqip from "lqip-modern";
 import File from "vinyl";
+import path from "path";
 
 /**
  * Convert files to JPEG according to the specifications given in a configuration.
