@@ -38,4 +38,4 @@ const validateJson = async (jsonFile, schemaFile) => {
  * EXPORTS
  * ====================================================================== */
 
-export { validateJSON };
+export { validateJson };
