@@ -1,0 +1,28 @@
+{
+  "name": "gulp-nc-validation-tools",
+  "version": "0.0.1",
+  "description": "Simple utility functions for validating data files for websites",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angusmci/gulp-nc-validation-tools.git"
+  },
+  "keywords": [
+    "validation",
+    "JSON",
+    "JSON Schema"
+  ],
+  "author": "Angus McIntyre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angusmci/gulp-nc-validation-tools/issues"
+  },
+  "homepage": "https://github.com/angusmci/gulp-nc-validation-tools#readme",
+  "dependencies": {
+    "ajv": "^8.16.0",
+    "fancy-log": "^2.0.0"
+  }
+}
