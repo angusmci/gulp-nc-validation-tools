@@ -34,8 +34,32 @@ const validateJson = async (jsonFile, schemaFile) => {
   });
 };
 
+/**
+ * Validate a complete directory of JSON documents against a specified schema.
+ *
+ * @param {*} jsonDir
+ * @param {*} schemaFile
+ * @returns
+ */
+const validateJsonDirectory = async (jsonDir, schemaFile) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const filenames = await fsPromises.readdir(jsonDir);
+      for (const filename of filenames) {
+        if (filename.endsWith("json")) {
+          const filePath = path.join(jsonDir, filename);
+          await validateJson(filePath, schemaFile);
+        }
+      }
+    } catch (err) {
+      reject(err);
+    }
+    resolve(true);
+  });
+};
+
 /* ======================================================================
  * EXPORTS
  * ====================================================================== */
 
-export { validateJson };
+export { validateJson, validateJsonDirectory };
