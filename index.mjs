@@ -14,7 +14,7 @@ const loadJsonFile = async (filePath) => {
  * @param {*} schemaFile
  * @returns
  */
-const validateJSON = async (jsonFile, schemaFile) => {
+const validateJson = async (jsonFile, schemaFile) => {
   return new Promise(async (resolve, reject) => {
     try {
       fancylog.info(`Validating ${jsonFile} against ${schemaFile}`);

@@ -8,5 +8,16 @@ This is NOT a finished library. It's a set of thrown-together functions for use 
 
 ## Usage
 
-TBD
+The only function available currently is `validateJson`, which uses `ajv` to validate a JSON file against a JSON schema. See [JSON Schema](https://json-schema.org/) for more information about JSON schemas.
 
+A sample `gulp` task using this might look like:
+
+    gulp.task(
+    "test",
+    gulp.series(
+        () => validateJson("data/a.json", "test/schemas/a.schema.json"),
+        () => validateJson("data/b.json", "test/schemas/b.schema.json")
+    )
+    );
+
+If a file fails validation, an error message will be printed on the console, and the task will fail.
