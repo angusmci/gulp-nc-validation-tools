@@ -1,6 +1,7 @@
 import { promises as fsPromises } from "fs";
 import Ajv from "ajv";
 import fancylog from "fancy-log";
+import path from "path";
 
 const loadJsonFile = async (filePath) => {
   const theJson = await fsPromises.readFile(filePath, "utf8");
