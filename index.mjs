@@ -18,15 +18,18 @@ const loadJsonFile = async (filePath) => {
 const validateJson = async (jsonFile, schemaFile) => {
   return new Promise(async (resolve, reject) => {
     try {
-      fancylog.info(`Validating ${jsonFile} against ${schemaFile}`);
+      // fancylog.info(`Validating ${jsonFile} against ${schemaFile}`);
       var theJson = await loadJsonFile(jsonFile);
       var theSchema = await loadJsonFile(schemaFile);
       const ajv = new Ajv();
       const validate = ajv.compile(theSchema);
       const valid = validate(theJson);
       if (!valid) {
-        fancylog.warn(validate.errors);
-        reject(`'${jsonFile} contained errors`);
+        // fancylog.warn(validate.errors);
+        let theError = validate.errors[0];
+        let thePath = theError.instancePath || '/';
+        let theDetails = Object.keys(theError.params).map((key) => `${key}=${theError.params[key]}`).join(",");
+        reject(`'${jsonFile}': ${thePath} ${theError.message} (${theDetails})`);
       }
       resolve(valid);
     } catch (err) {
@@ -43,17 +46,26 @@ const validateJson = async (jsonFile, schemaFile) => {
  * @returns
  */
 const validateJsonDirectory = async (jsonDir, schemaFile) => {
+  let errorCount = 0;
+  fancylog.info(`Validating ${jsonDir} against ${schemaFile}`);
   return new Promise(async (resolve, reject) => {
     try {
       const filenames = await fsPromises.readdir(jsonDir);
       for (const filename of filenames) {
         if (filename.endsWith("json")) {
           const filePath = path.join(jsonDir, filename);
-          await validateJson(filePath, schemaFile);
+          await validateJson(filePath, schemaFile).catch((err) =>
+          {
+      		errorCount++;
+      		fancylog.error(err);
+          });
         }
       }
     } catch (err) {
-      reject(err);
+  		fancylog.info(`Errors detected while validating ${jsonDir} against ${schemaFile}`);
+    }
+    if (errorCount > 0) {
+    	reject(`${errorCount} error(s) detected`);
     }
     resolve(true);
   });
