@@ -18,14 +18,12 @@ const loadJsonFile = async (filePath) => {
 const validateJson = async (jsonFile, schemaFile) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // fancylog.info(`Validating ${jsonFile} against ${schemaFile}`);
       var theJson = await loadJsonFile(jsonFile);
       var theSchema = await loadJsonFile(schemaFile);
       const ajv = new Ajv();
       const validate = ajv.compile(theSchema);
       const valid = validate(theJson);
       if (!valid) {
-        // fancylog.warn(validate.errors);
         let theError = validate.errors[0];
         let thePath = theError.instancePath || '/';
         let theDetails = Object.keys(theError.params).map((key) => `${key}=${theError.params[key]}`).join(",");
@@ -33,6 +31,7 @@ const validateJson = async (jsonFile, schemaFile) => {
       }
       resolve(valid);
     } catch (err) {
+      fancylog.error(`Failed to read ${jsonFile}: ${err.message}`);
       reject(err);
     }
   });
